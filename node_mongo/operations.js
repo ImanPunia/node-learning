@@ -1,35 +1,27 @@
-exports.insertDocument = (db, document, collection,  callback) => {
+exports.insertDocument = (db, document, collection) => {
 
     const coll=  db.collection(collection);
 
-    coll.insertOne(document, (err, res) => {
-        callback(res);
-    })
+    return coll.insertOne(document);
 };
 
-exports.findDocuments = (db, collection,  callback) => {
+exports.findDocuments = (db, collection) => {
 
     const coll=  db.collection(collection);
 
-    coll.find({}).toArray((err, res) => {
-        callback(res);
-    });
+    return coll.find({}).toArray();
 };
 
-exports.removeDocument =  (db, document, collection, callback) => {
+exports.removeDocument =  (db, document, collection) => {
 
     const coll=  db.collection(collection);
 
-    coll.deleteOne(document,  (err, res) => {
-        callback(res);
-    })
+    return coll.deleteOne(document);
 };
 
-exports.updateDocument = (db,  document,  update , collection ,  callback ) => {
+exports.updateDocument = (db,  document,  update , collection ) => {
 
     const coll=  db.collection(collection);
 
-    coll.updateOne(document, {$set: update} , null  ,  (err, res) => {
-        callback(res);
-    })
+    return coll.updateOne(document, {$set: update} , null);
 };
