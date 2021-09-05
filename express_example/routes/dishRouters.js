@@ -25,4 +25,23 @@ dishRouter.route('/')
     res.end('All the dishes will be deleted');
 });
 
+dishRouter.route('/:dishId')
+.all((req,res,next) => {
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/plain');
+    next();
+})
+.get((req,res,next) => {
+    res.end('fetched the dish With id ' + req.params.dishId);
+})
+.post( (req,res,next) => {
+    res.end('You will be able to save individual dish with id ' + req.params.dishId);
+})
+.put((req,res,next) => {
+    res.end('dish with id ' + req.params.dishId + ' will be updated');
+})
+.delete((req,res,next) => {
+    res.end('dish with id ' + req.params.dishId + ' will be deleted');
+});
+
 module.exports = dishRouter;
