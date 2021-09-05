@@ -1,16 +1,16 @@
-const rect =  require('./rectangle');
+const http  = require('http');
 
-function solveRectangle(l,b){
-    console.log("Solving for rectanfgle for l = " + l + "for b " + b);
-    rect(l,b, (err,rectangle) => {
-        if(err){
-            console.log(err)
-        } else {
-            console.log("area of  rectangle for l " + l + "for b " + b +" = " + rectangle.area());
-            console.log("perimeter ofrectangle  is " + rectangle.perimeter())
-        }
-    });
-}
+const hostname = 'localhost';
+const port = 3000;
 
+const server = http.createServer((req,res) => {
+    console.log(req.headers);
 
-solveRectangle(2,4)
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'text/html');
+    res.end('<html><body><h1>Hello, World!</h1></body></html>');
+});
+
+server.listen(port, hostname, () => {
+    console.log(`Server running at https://${hostname}:${port}`);
+});
