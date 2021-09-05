@@ -1,8 +1,8 @@
 const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
 
 const url = 'mongodb://localhost:27017/';
 const dbname = 'conFusion';
+const dbOperations =  require('./operations');
 
 MongoClient.connect(url, (err, client) => {
 
@@ -10,20 +10,28 @@ MongoClient.connect(url, (err, client) => {
     const db = client.db(dbname);
     const collection= db.collection('dishes');
 
-    collection.insertOne({"name": "Harman" , "description": "my second dish"} , (err, res) => {
+    console.log(collection);
 
-        console.log('After insertion');
-        console.log(res);
+   dbOperations.insertDocument(db, {"name":"Iman1", "description": "my second dish"}, 'dishes', (result) => {
+       console.log('Insert document:\n', result.acknowledged);
 
-        collection.find({}).toArray((err,docs) => {
+       dbOperations.findDocuments(db, 'dishes', (result) => {
+           console.log('Found Documents:\n' ,  result);
+
+           dbOperations.updateDocument(db, {"name":"Iman1"} , {"description": "My 3rd dishes"}, 'dishes', (result) => {
+               console.log('Updated document\n:' + result.modifiedCount);
+
+               dbOperations.findDocuments(db, 'dishes', (result) => {   
+                console.log('Found Documents:\n' ,  result);
             
-            console.log('Found:\n');
-            console.log(docs);
+                    db.dropCollection('dishes', (result) => {
+                        console.log('Dropped  collection ' + result);
 
-            db.dropCollection('dishes', (err, result) => {
+                        client.close();
+                    });
+                })
+           })
+       });
+   });
 
-                client.close();
-            });
-        })
-    });
 });
