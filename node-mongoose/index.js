@@ -10,16 +10,36 @@ connect.then((db) => {
 
     //creates and saves the doc 
     Dishes.create({
-        name: 'Iman',
-        description: 'new dish'
+        name: 'Iman1',
+        description: 'new dish',
     })
     .then((dish) => {
         console.log(dish);
 
-        return Dishes.find({}).exec();
+        return Dishes.findByIdAndUpdate(dish._id, {
+                $set:{
+                    description : 'my first dish'
+                }
+        }, 
+        { 
+            new : true 
+        })
+        .exec();
     })
-    .then((dishes) => {
-        console.log(dishes);
+    .then((dish) => {
+        console.log(dish);
+
+        dish.comments.push({
+            rating : 5,
+            comment: 'good',
+            author: 'Harman' 
+        });
+
+        return dish.save();
+
+    }).then((dish) => {
+
+        console.log(dish);
 
         return Dishes.remove({});
     })
